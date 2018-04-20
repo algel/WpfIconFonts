@@ -1,0 +1,151 @@
+﻿<Window x:Class="Algel.WpfIconFonts.Viewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:awt="https://github.com/algel/WpfTools" 
+        xmlns:enumsNet="clr-namespace:EnumsNET;assembly=Enums.NET"
+        xmlns:viewer="clr-namespace:Algel.WpfIconFonts.Viewer"
+        xmlns:wif="https://github.com/algel/WpfIconFonts"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="650" Width="720" ResizeMode="CanMinimize">
+
+    <Window.Resources>
+
+        <Style x:Key="GridInGroupBox" TargetType="{x:Type awt:StackGrid}">
+            <Setter Property="Margin" Value="0 10 0 0" />
+        </Style>
+
+        <Style x:Key="GridWithParams" TargetType="{x:Type awt:StackGrid}">
+            <Setter Property="AutogenerateRows" Value="True" />
+            <Setter Property="ColumnDefinitionsScript" Value="Auto labels;300;" />
+        </Style>
+
+    </Window.Resources>
+
+    <Window.DataContext>
+        <viewer:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <awt:StackGrid ColumnDefinitionsScript="270;*">
+
+        <GroupBox Header="Иконки" Margin="5 5 0 5">
+            <awt:StackGrid Style="{StaticResource GridInGroupBox}" RowDefinitionsScript="Auto;*">
+                <awt:StackGrid ColumnDefinitionsScript="Auto;200">
+
+                    <Label Content="Фильтр:" Target="{x:Reference textFilter}" />
+                    <TextBox x:Name="textFilter" Text="{Binding IconFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </awt:StackGrid>
+
+                <ListBox x:Name="listIcons" awt:StackGrid.StretchToLastColumn="True" IsSynchronizedWithCurrentItem="True"
+                         ItemsSource="{Binding IconSource}" Margin="0 4 0 0" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type enumsNet:EnumMember}">
+                            <awt:StackGrid ColumnDefinitionsScript="50;Auto">
+                                <wif:TextIcon Icon="{Binding Value}" FontSize="24" />
+                                <TextBlock Text="{Binding Name}" />
+                            </awt:StackGrid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </awt:StackGrid>
+        </GroupBox>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <awt:StackGrid AutogenerateRows="True" IsSharedSizeScope="True">
+
+                <GroupBox Header="Общие свойства" Margin="10 5 10 10">
+
+                    <awt:StackGrid Style="{awt:MergedStyles BasedOn={StaticResource GridInGroupBox}, MergeStyle={StaticResource GridWithParams}}">
+                        <Label Content="Переворот:" />
+                        <ComboBox ItemsSource="{Binding FlipOrientationSource}"
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding Flip, Mode=TwoWay}" />
+
+                        <awt:EmptyRow Height="5" />
+
+                        <Label Content="Поворот:" />
+                        <Slider Minimum="0" Maximum="360" AutoToolTipPrecision="0" AutoToolTipPlacement="BottomRight" TickFrequency="45" TickPlacement="BottomRight"
+                                Value="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <awt:EmptyRow Height="5" />
+
+                        <Label Content="Вращать:" />
+                        <awt:StackGrid ColumnDefinitionsScript="Auto;*">
+                            <CheckBox x:Name="checkBoxIsSpin" IsChecked="{Binding IsSpin, Mode=TwoWay}" VerticalAlignment="Center" Margin="0 0 5 0" />
+                            <Slider Value="{Binding SpinDuration, Mode=TwoWay}" IsEnabled="{Binding IsChecked, Source={x:Reference checkBoxIsSpin}, Mode=OneWay}"
+                                    Minimum="1" Maximum="5" IsDirectionReversed="True" Delay="500" />
+                        </awt:StackGrid>
+
+                        <awt:EmptyRow Height="5" />
+
+                        <Label Content="Цвет:" />
+                        <ComboBox ItemsSource="{Binding BrushSource}" SelectedValuePath="Value" SelectedValue="{Binding Foreground, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <awt:StackGrid ColumnDefinitionsScript="18;*" RowDefinitionsScript="18" Margin="1">
+                                        <Border Background="{Binding Value, Mode=OneWay}" CornerRadius="2" />
+                                        <TextBlock Text="{Binding Name}" Margin="10 0" />
+                                    </awt:StackGrid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                    </awt:StackGrid>
+                </GroupBox>
+
+                <GroupBox Header="FontAwesome (наследник от TextBlock)" Margin="10">
+                    <awt:StackGrid Style="{StaticResource GridInGroupBox}" AutogenerateRows="True">
+                        <awt:StackGrid Style="{StaticResource GridWithParams}">
+
+                            <Label Content="Размер:" />
+                            <Slider x:Name="sliderFontSize" Minimum="10" Maximum="100" Value="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <awt:EmptyRow Height="5" />
+
+                            <Label Content="Фон:" />
+                            <ComboBox ItemsSource="{Binding BrushSource}" SelectedValuePath="Value" SelectedValue="{Binding Background, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <awt:StackGrid ColumnDefinitionsScript="18;*" RowDefinitionsScript="18" Margin="1">
+                                            <Border Background="{Binding Value, Mode=OneWay}" CornerRadius="2" />
+                                            <TextBlock Text="{Binding Name}" Margin="10 0" VerticalAlignment="Center" />
+                                        </awt:StackGrid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </awt:StackGrid>
+
+                        <wif:TextIcon Margin="0 10" HorizontalAlignment="Center"
+                                        Icon="{Binding IconSource.CurrentItem.Value, Mode=OneWay}" FontSize="{Binding FontSize, Mode=OneWay}"
+                                        FlipOrientation="{Binding Flip.Value, Mode=OneWay}" Rotation="{Binding Rotation, Mode=OneWay}"
+                                        Spin="{Binding IsSpin, Mode=OneWay}" SpinDuration="{Binding SpinDuration, Mode=OneWay}"
+                                        Foreground="{Binding Foreground, Mode=OneWay}" Background="{Binding Background, Mode=OneWay}" />
+
+                        <TextBox IsReadOnly="True" BorderThickness="0" TextAlignment="Center" Text="{Binding FontAwesomeExampleString, Mode=OneWay}" TextWrapping="WrapWithOverflow" MaxLines="5" />
+                    </awt:StackGrid>
+                </GroupBox>
+
+                <GroupBox Header="ImageAwesome (наследник от Image)" Margin="10">
+                    <awt:StackGrid Style="{StaticResource GridInGroupBox}" AutogenerateRows="True">
+                        <awt:StackGrid Style="{StaticResource GridWithParams}">
+
+                            <Label Content="Ширина:" Target="{x:Reference sliderWidth}" />
+                            <Slider x:Name="sliderWidth" Minimum="10" Maximum="200" Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Content="Высота:" Target="{x:Reference sliderHeight}" />
+                            <Slider x:Name="sliderHeight" Minimum="10" Maximum="200" Value="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </awt:StackGrid>
+
+                        <wif:ImageIcon Margin="0 10" Icon="{Binding IconSource.CurrentItem.Value, Mode=OneWay}" Width="{Binding Width, Mode=OneWay}" Height="{Binding Height, Mode=OneWay}"
+                                         FlipOrientation="{Binding Flip.Value, Mode=OneWay}" Rotation="{Binding Rotation, Mode=OneWay}"
+                                         Spin="{Binding IsSpin, Mode=OneWay}" SpinDuration="{Binding SpinDuration, Mode=OneWay}"
+                                         Foreground="{Binding Foreground, Mode=OneWay}" />
+
+                        <TextBox IsReadOnly="True" BorderThickness="0" TextAlignment="Center" Text="{Binding ImageAwesomeExampleString, Mode=OneWay}" TextWrapping="WrapWithOverflow" MaxLines="5" />
+                    </awt:StackGrid>
+                </GroupBox>
+            </awt:StackGrid>
+        </ScrollViewer>
+    </awt:StackGrid>
+</Window>

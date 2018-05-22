@@ -90,5 +90,6 @@
 		public string Suffix {get;set;}
 		public FontWeight Weight {get;set;}
 		public Func<IEnumerable<Tuple<string, int>>> GetNamesFunc {get;set;}
+		public bool IsSystem {get;set;}
     }
 #>

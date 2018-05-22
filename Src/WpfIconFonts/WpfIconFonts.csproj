@@ -53,10 +53,10 @@
       <DependentUpon>Internals.cs</DependentUpon>
     </Compile>
     <Compile Include="TextIcon.cs" />
-    <Compile Include="Utils.cs">
+    <Compile Include="Utils1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Utils.tt</DependentUpon>
+      <DependentUpon>Utils.ttinclude</DependentUpon>
     </Compile>
     <None Include="IconFontGenerator.cs">
       <AutoGen>True</AutoGen>
@@ -99,10 +99,10 @@
     <None Include="Resources\fa-brands-400.svg" />
     <None Include="Resources\fa-regular-400.svg" />
     <None Include="Resources\fa-solid-900.svg" />
-    <Content Include="Utils.tt">
+    <None Include="Utils.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Utils.cs</LastGenOutput>
-    </Content>
+      <LastGenOutput>Utils1.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -51,6 +51,7 @@
 										.Descendants((XNamespace)"http://www.w3.org/2000/svg"+"glyph")
 										.Select(e => new Tuple<string, int>(Safe(e.Attribute("glyph-name").Value), char.ConvertToUtf32(e.Attribute("unicode").Value, 0)))
 		},
+		/*************************/
 		/*For TelerikWebUI font: */
 		/*new FontInfo
 		{ 
@@ -62,7 +63,9 @@
 										.Elements((XNamespace)"clr-namespace:System;assembly=mscorlib" + "String")
 										.Select(e => new Tuple<string, int>(e.Attribute((XNamespace)"http://schemas.microsoft.com/winfx/2006/xaml" + "Key").Value.Substring(5), char.ConvertToUtf32(e.Value, 0)))
 		},*/
-		/*Example of adding any system font character*/
+
+		/***********************************************/
+		/*Example of adding any system font character: */
 		/*new FontInfo
 		{
 			FontFamilyName = "Tahoma",
@@ -71,6 +74,39 @@
 			Weight = FontWeights.Regular, 
 			IsSystem = true,
 			GetNamesFunc=()=>new Tuple<string, int>[]{ new Tuple<string, int>("VerticalFourDots", 0x205E)}
+		},*/
+
+		/***********************/
+		/*For FontAwesome Pro: */
+		/*new FontInfo
+		{ 
+			FontFamilyName = "Font Awesome 5 Pro Solid", 
+			Prefix = "", 
+			Suffix = "_Solid", 
+			Weight = FontWeights.Black, 
+			GetNamesFunc = ()=> XElement.Load(Path.Combine(resourcesDirectory, "fa-solid-900.svg"))
+										.Descendants((XNamespace)"http://www.w3.org/2000/svg"+"glyph")
+										.Select(e => new Tuple<string, int>(Safe(e.Attribute("glyph-name").Value), char.ConvertToUtf32(e.Attribute("unicode").Value, 0)))
+		},
+		new FontInfo
+		{ 
+			FontFamilyName = "Font Awesome 5 Pro Regular",
+			Prefix = "", 
+			Suffix = "_Regular", 
+			Weight = FontWeights.Regular, 
+			GetNamesFunc = ()=> XElement.Load(Path.Combine(resourcesDirectory, "fa-regular-400.svg"))
+										.Descendants((XNamespace)"http://www.w3.org/2000/svg"+"glyph")
+										.Select(e => new Tuple<string, int>(Safe(e.Attribute("glyph-name").Value), char.ConvertToUtf32(e.Attribute("unicode").Value, 0)))
+		},
+		new FontInfo
+		{ 
+			FontFamilyName = "Font Awesome 5 Pro Light",
+			Prefix = "", 
+			Suffix = "_Light", 
+			Weight = FontWeights.Light, 
+			GetNamesFunc = ()=> XElement.Load(Path.Combine(resourcesDirectory, "fa-light-300.svg"))
+										.Descendants((XNamespace)"http://www.w3.org/2000/svg"+"glyph")
+										.Select(e => new Tuple<string, int>(Safe(e.Attribute("glyph-name").Value), char.ConvertToUtf32(e.Attribute("unicode").Value, 0)))
 		},*/
     };
 
